@@ -17,11 +17,11 @@
     align-items: center;
     background-color: rgba(255, 255, 255, 0.25);
     font-size: 1.25rem;
-    padding: 1rem;
   }
 
   .name {
     flex: 1;
+    padding: 1rem;
   }
 
   .card + .card {

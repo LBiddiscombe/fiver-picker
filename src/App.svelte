@@ -1,22 +1,34 @@
 <script>
   import { Tabs, Tab, TabList, TabPanel } from 'svelte-tabs'
-  import * as netlifyIdentity from 'netlify-identity-widget'
-
+  import Icon from 'svelte-awesome'
+  import { faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
   import Players from './components/Players.svelte'
   import Teams from './components/Teams.svelte'
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
 
-  let user
+  let loggedInUser
 
   onMount(() => {
-    netlifyIdentity.init()
-    user = netlifyIdentity.currentUser()
-    netlifyIdentity.on('init', (user) => console.log('init', user))
-    netlifyIdentity.on('login', (user) => console.log('login', user))
-    netlifyIdentity.on('logout', () => console.log('Logged out'))
+    netlifyIdentity.on('init', (user) => {
+      console.log('init', user)
+      loggedInUser = netlifyIdentity.currentUser()
+      if (!user) netlifyIdentity.open('login')
+    })
+    netlifyIdentity.on('login', (user) => {
+      console.log('login', user)
+      loggedInUser = netlifyIdentity.currentUser()
+    })
+    netlifyIdentity.on('logout', () => {
+      console.log('logout')
+      loggedInUser = null
+    })
     netlifyIdentity.on('error', (err) => console.error('Error', err))
     netlifyIdentity.on('open', () => console.log('Widget opened'))
     netlifyIdentity.on('close', () => console.log('Widget closed'))
+  })
+
+  onDestroy(() => {
+    netlifyIdentity.off('login')
   })
 </script>
 
@@ -38,10 +50,18 @@
     color: white;
     font-size: 1.5rem;
   }
+
+  button {
+    display: flex;
+    align-items: center;
+  }
 </style>
 
 <main>
-  {#if user}
+  {#if loggedInUser}
+    <button on:click={() => netlifyIdentity.logout()}>Sign Out&nbsp;
+      <Icon data={faSignOutAlt} class="icon" scale="1" />
+    </button>
     <Tabs initialSelectedIndex={0}>
       <TabList>
         <Tab>Players</Tab>
@@ -56,5 +76,8 @@
         <Teams />
       </TabPanel>
     </Tabs>
+  {:else}
+    <button on:click={() => netlifyIdentity.open('login')}>Sign In&nbsp;
+      <Icon data={faSignInAlt} class="icon" scale="1" /></button>
   {/if}
 </main>

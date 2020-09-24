@@ -5,7 +5,6 @@
   export let ref
   export let name
   export let level
-  export let players
 
   let showModal = false
 </script>
@@ -34,7 +33,7 @@
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Edit {name}</h2>
-      <PlayerEdit {players} {ref} {name} {level} on:save on:delete on:close={() => (showModal = false)} />
+      <PlayerEdit {ref} {name} {level} on:save on:delete on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

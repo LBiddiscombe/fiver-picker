@@ -1,6 +1,7 @@
 <script>
   import { Tabs, Tab, TabList, TabPanel } from 'svelte-tabs'
   import Players from './components/Players.svelte'
+  import Teams from './components/Teams.svelte'
 </script>
 
 <style>
@@ -24,7 +25,7 @@
 </style>
 
 <main>
-  <Tabs>
+  <Tabs initialSelectedIndex={0}>
     <TabList>
       <Tab>Players</Tab>
       <Tab>Teams</Tab>
@@ -35,7 +36,7 @@
     </TabPanel>
 
     <TabPanel>
-      <h2>Teams</h2>
+      <Teams />
     </TabPanel>
   </Tabs>
 </main>

@@ -8,7 +8,7 @@ body {
 body {
   color: #fff;
   background: rgb(0, 0, 0);
-  background: url('images/beer.jpg'), linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 53, 1) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 53, 1) 100%), url('./images/beer.jpg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
@@ -19,6 +19,38 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
     sans-serif;
   overflow: hidden;
+}
+
+#duotone {
+  background: url('https://jmperezperez.com/assets/images/posts/fecolormatrix-kanye-west.jpg') no-repeat center center
+    fixed;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+#duotone::before {
+  background-color: rgb(240, 14, 46);
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: darken;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#duotone::after {
+  background-color: rgb(25, 37, 80);
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: lighten;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 a {

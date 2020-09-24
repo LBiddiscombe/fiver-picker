@@ -3,6 +3,7 @@
   import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
   import { createEventDispatcher } from 'svelte'
   import Levels from './Levels.svelte'
+  import { players } from '../stores/players'
 
   const dispatch = createEventDispatcher()
   const save = () => {
@@ -11,7 +12,7 @@
       return
     }
 
-    if (name !== originalName && players.find((player) => player.name === name)) {
+    if (name !== originalName && $players.find((player) => player.name === name)) {
       error = 'A player with this name already exists'
       return
     }
@@ -29,7 +30,7 @@
   export let ref = -1
   export let name
   export let level = 3
-  export let players
+
   let error = ''
   let originalName = name.toString()
 </script>

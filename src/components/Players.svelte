@@ -3,15 +3,15 @@
   import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
   import { onMount } from 'svelte'
   import Modal from './Modal.svelte'
-  import { allPlayers, addPlayer, updatePlayer, deletePlayer } from '../api'
+  import { allPlayers } from '../api'
   import Player from './Player.svelte'
   import PlayerEdit from './PlayerEdit.svelte'
+  import { players } from '../stores/players'
 
-  let players
   let showModal = false
 
   onMount(async () => {
-    players = await allPlayers()
+    players.set(await allPlayers())
   })
 
   async function handleSave(e) {
@@ -23,23 +23,15 @@
     }
 
     if (ref === -1) {
-      addPlayer(player).then((addedPlayer) => {
-        players = [...players, addedPlayer]
-      })
+      players.add(player)
     } else {
-      await updatePlayer(ref, player).then((updatedPlayer) => {
-        let playerToUpdate = players.find((p) => p.ref === ref)
-        playerToUpdate.name = player.name
-        playerToUpdate.level = player.level
-        players = players
-      })
+      players.update(ref, player)
     }
   }
 
   async function handleDelete(e) {
     const ref = e.detail.ref
-    players = players.filter((player) => player.ref !== ref)
-    await deletePlayer(ref)
+    players.delete(ref)
   }
 </script>
 
@@ -70,18 +62,18 @@
 <div class="wrapper">
   <button on:click={() => (showModal = true)}><Icon data={faUserPlus} scale="2" class="icon" /></button>
 
-  {#if !players}
+  {#if $players.length === 0}
     <p>Loading...</p>
   {:else}
-    {#each players as player (player.ref)}
-      <Player {players} {...player} on:delete={handleDelete} on:save={handleSave} />
+    {#each $players as player (player.ref)}
+      <Player {...player} on:delete={handleDelete} on:save={handleSave} />
     {/each}
   {/if}
 
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Add Player</h2>
-      <PlayerEdit {players} ref={-1} name="" on:save={handleSave} on:close={() => (showModal = false)} />
+      <PlayerEdit ref={-1} name="" on:save={handleSave} on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

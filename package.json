@@ -18,6 +18,7 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "netlify-cli": "^2.64.0",
+    "netlify-identity-widget": "^1.9.1",
     "sirv-cli": "^1.0.0",
     "svelte-awesome": "^2.3.0",
     "svelte-tabs": "^1.1.0"

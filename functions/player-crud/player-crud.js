@@ -1,14 +1,14 @@
 exports.handler = async (event, context) => {
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
-  const segments = path.split('/').filter(e => e)
+  const segments = path.split('/').filter((e) => e)
 
   switch (event.httpMethod) {
     case 'GET':
-      // e.g. GET /.netlify/functions/fauna-crud
+      // e.g. GET /.netlify/functions/player-crud
       if (segments.length === 0) {
         return require('./read-all').handler(event, context)
       }
-      // e.g. GET /.netlify/functions/fauna-crud/123456
+      // e.g. GET /.netlify/functions/player-crud/123456
       if (segments.length === 1) {
         event.id = segments[0]
         return require('./read').handler(event, context)
@@ -16,32 +16,32 @@ exports.handler = async (event, context) => {
         return {
           statusCode: 500,
           body:
-            'too many segments in GET request, must be either /.netlify/functions/fauna-crud or /.netlify/functions/fauna-crud/123456',
+            'too many segments in GET request, must be either /.netlify/functions/player-crud or /.netlify/functions/player-crud/123456',
         }
       }
     case 'POST':
-      // e.g. POST /.netlify/functions/fauna-crud with a body of key value pair objects, NOT strings
+      // e.g. POST /.netlify/functions/player-crud with a body of key value pair objects, NOT strings
       return require('./create').handler(event, context)
     case 'PUT':
-      // e.g. PUT /.netlify/functions/fauna-crud/123456 with a body of key value pair objects, NOT strings
+      // e.g. PUT /.netlify/functions/player-crud/123456 with a body of key value pair objects, NOT strings
       if (segments.length === 1) {
         event.id = segments[0]
         return require('./update').handler(event, context)
       } else {
         return {
           statusCode: 500,
-          body: 'invalid segments in POST request, must be /.netlify/functions/fauna-crud/123456',
+          body: 'invalid segments in POST request, must be /.netlify/functions/player-crud/123456',
         }
       }
     case 'DELETE':
-      // e.g. DELETE /.netlify/functions/fauna-crud/123456
+      // e.g. DELETE /.netlify/functions/player-crud/123456
       if (segments.length === 1) {
         event.id = segments[0]
         return require('./delete').handler(event, context)
       } else {
         return {
           statusCode: 500,
-          body: 'invalid segments in DELETE request, must be /.netlify/functions/fauna-crud/123456',
+          body: 'invalid segments in DELETE request, must be /.netlify/functions/player-crud/123456',
         }
       }
   }

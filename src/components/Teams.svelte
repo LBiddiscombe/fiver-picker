@@ -1,15 +1,29 @@
 <script>
   import { onMount } from 'svelte'
   import Icon from 'svelte-awesome'
-  import { faPlusCircle, faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
+  import { faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
   import { shuffle, balance } from '../utils'
-  import { teamPlayers, teamA, teamB, teamARating, teamBRating } from '../stores/teams'
+  import { teamPlayers, teamA, teamB, teamARating, teamBRating, saveTeams } from '../stores/teams'
 
-  let teams = $players.slice()
   onMount(() => {
-    teamPlayers.set(teams)
+    teamPlayers.set(
+      $players
+        .slice()
+        .filter((player) => player.picked)
+        .sort((a, b) => a.seq - b.seq)
+    )
   })
+
+  const onShuffle = () => {
+    teamPlayers.set(shuffle($teamPlayers))
+    saveTeams($teamPlayers)
+  }
+
+  const onBalance = () => {
+    teamPlayers.set(balance($teamPlayers))
+    saveTeams($teamPlayers)
+  }
 </script>
 
 <style>
@@ -74,12 +88,6 @@
 {/if}
 
 <div class="actions">
-  <button class="shuffle" on:click={() => teamPlayers.set(shuffle(teams))}><Icon
-      data={faDice}
-      class="icon"
-      scale="3" /></button>
-  <button class="balanced" on:click={() => teamPlayers.set(balance(teams))}><Icon
-      data={faBalanceScale}
-      class="icon"
-      scale="3" /></button>
+  <button class="shuffle" on:click={onShuffle}><Icon data={faDice} class="icon" scale="3" /></button>
+  <button class="balanced" on:click={onBalance}><Icon data={faBalanceScale} class="icon" scale="3" /></button>
 </div>

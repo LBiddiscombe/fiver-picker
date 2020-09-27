@@ -20,6 +20,7 @@
     let player = {
       name: e.detail.name,
       level: e.detail.level,
+      picked: e.detail.picked,
     }
 
     if (ref === -1) {
@@ -73,7 +74,7 @@
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Add Player</h2>
-      <PlayerEdit ref={-1} name="" on:save={handleSave} on:close={() => (showModal = false)} />
+      <PlayerEdit ref={-1} on:save={handleSave} on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

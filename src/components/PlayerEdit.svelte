@@ -16,7 +16,7 @@
       error = 'A player with this name already exists'
       return
     }
-    dispatch('save', { ref, name, level })
+    dispatch('save', { ref, name, level, picked })
     dispatch('close')
   }
   const del = () => {
@@ -28,8 +28,9 @@
   }
 
   export let ref = -1
-  export let name
+  export let name = ''
   export let level = 3
+  export let picked = false
 
   let error = ''
   let originalName = name.toString()

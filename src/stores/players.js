@@ -18,6 +18,7 @@ function createPlayers() {
           let playerToUpdate = current.find((p) => p.ref === ref)
           playerToUpdate.name = player.name
           playerToUpdate.level = player.level
+          playerToUpdate.picked = player.picked
           return current
         })
       })

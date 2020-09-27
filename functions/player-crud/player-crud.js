@@ -23,6 +23,9 @@ exports.handler = async (event, context) => {
       // e.g. POST /.netlify/functions/player-crud with a body of key value pair objects, NOT strings
       return require('./create').handler(event, context)
     case 'PUT':
+      if (segments.length === 0) {
+        return require('./update-some').handler(event, context)
+      }
       // e.g. PUT /.netlify/functions/player-crud/123456 with a body of key value pair objects, NOT strings
       if (segments.length === 1) {
         event.id = segments[0]

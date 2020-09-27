@@ -1,4 +1,5 @@
 import { writable, derived } from 'svelte/store'
+import { updatePlayers } from '../api'
 
 export const teamPlayers = writable([])
 
@@ -25,3 +26,9 @@ export const teamARating = derived(teamA, ($teamA) => {
 export const teamBRating = derived(teamB, ($teamB) => {
   return $teamB.reduce((accum, cur) => accum + cur.level, 0)
 })
+
+export function saveTeams(players) {
+  let data = players.slice()
+  data = data.map((player, i) => ({ ...player, seq: i + 1 }))
+  updatePlayers(data)
+}

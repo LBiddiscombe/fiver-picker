@@ -66,7 +66,9 @@
   {#if $players.length === 0}
     <p>Loading...</p>
   {:else}
-    {#each $players as player (player.ref)}
+    {#each $players.sort((a, b) => {
+      return a.name.localeCompare(b.name)
+    }) as player (player.ref)}
       <Player {...player} on:delete={handleDelete} on:save={handleSave} />
     {/each}
   {/if}

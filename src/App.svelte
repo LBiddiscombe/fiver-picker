@@ -58,26 +58,18 @@
 </style>
 
 <main>
-  {#if loggedInUser}
-    <button on:click={() => netlifyIdentity.logout()}>Sign Out&nbsp;
-      <Icon data={faSignOutAlt} class="icon" scale="1" />
-    </button>
-    <Tabs initialSelectedIndex={0}>
-      <TabList>
-        <Tab>Players</Tab>
-        <Tab>Teams</Tab>
-      </TabList>
+  <Tabs initialSelectedIndex={0}>
+    <TabList>
+      <Tab>Players</Tab>
+      <Tab>Teams</Tab>
+    </TabList>
 
-      <TabPanel>
-        <Players />
-      </TabPanel>
+    <TabPanel>
+      <Players />
+    </TabPanel>
 
-      <TabPanel>
-        <Teams />
-      </TabPanel>
-    </Tabs>
-  {:else}
-    <button on:click={() => netlifyIdentity.open('login')}>Sign In&nbsp;
-      <Icon data={faSignInAlt} class="icon" scale="1" /></button>
-  {/if}
+    <TabPanel>
+      <Teams />
+    </TabPanel>
+  </Tabs>
 </main>

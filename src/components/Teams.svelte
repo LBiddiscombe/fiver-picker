@@ -50,8 +50,8 @@
 
   .actions {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1rem;
+    right: 1rem;
     display: flex;
   }
 </style>
@@ -63,18 +63,12 @@
       {#each $teamA as player}
         <div class="card">{player.name}</div>
       {/each}
-      <button class="add" value="teamA">
-        <Icon data={faPlusCircle} class="icon" scale="2" />
-      </button>
     </div>
     <div class="team">
       <h2 class="title">Team B ({$teamBRating})</h2>
       {#each $teamB as player}
         <div class="card">{player.name}</div>
       {/each}
-      <button class="add" value="teamB">
-        <Icon data={faPlusCircle} class="icon" scale="2" />
-      </button>
     </div>
   </div>
 {/if}
@@ -83,9 +77,9 @@
   <button class="shuffle" on:click={() => teamPlayers.set(shuffle(teams))}><Icon
       data={faDice}
       class="icon"
-      scale="2" /></button>
+      scale="3" /></button>
   <button class="balanced" on:click={() => teamPlayers.set(balance(teams))}><Icon
       data={faBalanceScale}
       class="icon"
-      scale="2" /></button>
+      scale="3" /></button>
 </div>

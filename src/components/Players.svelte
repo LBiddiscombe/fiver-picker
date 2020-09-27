@@ -50,8 +50,8 @@
 
   button {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1rem;
+    right: 1rem;
     margin: 0;
     border: none;
     background: none;
@@ -60,7 +60,7 @@
 </style>
 
 <div class="wrapper">
-  <button on:click={() => (showModal = true)}><Icon data={faUserPlus} scale="2" class="icon" /></button>
+  <button on:click={() => (showModal = true)}><Icon data={faUserPlus} scale="3" class="icon" /></button>
 
   {#if $players.length === 0}
     <p>Loading...</p>

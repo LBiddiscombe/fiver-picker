@@ -10,6 +10,7 @@
     padding: 1em;
     max-width: 400px;
     margin: 0 auto;
+    touch-action: manipulation;
   }
 
   @media (min-width: 640px) {

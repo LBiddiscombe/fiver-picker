@@ -1,7 +1,10 @@
 <script>
   export let group
 
-  $: localStorage.setItem('group', group)
+  $: {
+    group = group.toUpperCase()
+    localStorage.setItem('group', group)
+  }
 </script>
 
 <style>
@@ -15,6 +18,7 @@
 
   input {
     margin: 0.5rem;
+    text-transform: uppercase;
   }
 </style>
 

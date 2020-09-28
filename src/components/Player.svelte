@@ -15,8 +15,8 @@
     name,
     level,
     picked,
-    group,
-    seq = null
+    group = undefined,
+    seq = undefined
 
   let showModal = false
 </script>

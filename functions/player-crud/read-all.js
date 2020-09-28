@@ -8,8 +8,9 @@ const client = new faunadb.Client({
 
 exports.handler = async (event, context) => {
   console.log('Function `read-all` invoked')
+  const group = event.queryStringParameters.group || 'MNF'
   return client
-    .query(q.Paginate(q.Match(q.Ref('indexes/players'))))
+    .query(q.Paginate(q.Match(q.Index('players_by_group'), group)))
     .then((response) => {
       const itemRefs = response.data
       // create new query out of item refs. http://bit.ly/2LG3MLg

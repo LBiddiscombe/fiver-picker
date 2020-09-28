@@ -4,7 +4,7 @@
   import { crossfade } from 'svelte/transition'
   import { flip } from 'svelte/animate'
   import Icon from 'svelte-awesome'
-  import { faDice, faBalanceScale, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+  import { faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
   import { shuffle, balance } from '../utils'
   import { teamPlayers, teamA, teamB, teamARating, teamBRating, saveTeams } from '../stores/teams'
@@ -92,19 +92,21 @@
   }
 
   button {
-    width: 100%;
     margin: 0;
-    border: none;
-    display: grid;
-    place-items: center;
-    background: none;
-    color: white;
+    margin-left: 0.25rem;
+    border-radius: 0.25rem;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
   }
 
   .actions {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0.75rem;
+    right: 0;
     display: flex;
   }
 
@@ -118,6 +120,14 @@
     font-weight: 900;
     visibility: visible;
     background-color: limegreen;
+  }
+
+  .info {
+    font-size: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 </style>
 
@@ -151,9 +161,17 @@
       {/each}
     </div>
   </div>
+{:else}
+  <p class="info">Select active players from the Players tab</p>
 {/if}
 
 <div class="actions">
-  <button class="shuffle" on:click={onShuffle}><Icon data={faDice} class="icon" scale="3" /></button>
-  <button class="balanced" on:click={onBalance}><Icon data={faBalanceScale} class="icon" scale="3" /></button>
+  <button class="shuffle" on:click={onShuffle}>
+    <Icon data={faDice} class="icon" scale="2" />
+    <span>Random</span>
+  </button>
+  <button class="balanced" on:click={onBalance}>
+    <Icon data={faBalanceScale} class="icon" scale="2" />
+    <span>Balanced</span>
+  </button>
 </div>

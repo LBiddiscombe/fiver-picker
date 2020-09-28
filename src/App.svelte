@@ -1,13 +1,22 @@
 <script>
+  import Icon from 'svelte-awesome'
+  import { faSlidersH, faUsers, faTshirt } from '@fortawesome/free-solid-svg-icons'
   import { Tabs, Tab, TabList, TabPanel } from 'svelte-tabs'
   import Players from './components/Players.svelte'
   import Teams from './components/Teams.svelte'
+  import Settings from './components/Settings.svelte'
+  import { onMount, getContext } from 'svelte'
+
+  let group = localStorage.getItem('group') || 'MNF'
+
+  onMount(() => {
+    group = localStorage.getItem('group') || 'MNF'
+  })
 </script>
 
 <style>
   main {
     position: relative;
-    padding: 1em;
     max-width: 400px;
     margin: 0 auto;
     touch-action: manipulation;
@@ -19,21 +28,57 @@
     }
   }
 
+  .tab-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-title span {
+    font-size: 0.75rem;
+  }
+
   :global(.svelte-tabs li.svelte-tabs__tab) {
-    color: white;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 1.5rem;
+  }
+
+  :global(.svelte-tabs li.svelte-tabs__selected) {
+    color: white;
+    border-bottom: solid white;
+    background-color: rgba(255, 255, 255, 0.25);
   }
 </style>
 
 <main>
-  <Tabs initialSelectedIndex={0}>
+  <Tabs initialSelectedIndex={1}>
     <TabList>
-      <Tab>Players</Tab>
-      <Tab>Teams</Tab>
+      <Tab>
+        <div class="tab-title">
+          <Icon data={faSlidersH} class="icon" scale="2" />
+          <span>Settings</span>
+        </div>
+      </Tab>
+      <Tab>
+        <div class="tab-title">
+          <Icon data={faUsers} class="icon" scale="2" />
+          <span>Players</span>
+        </div>
+      </Tab>
+      <Tab>
+        <div class="tab-title">
+          <Icon data={faTshirt} class="icon" scale="2" />
+          <span>Teams</span>
+        </div>
+      </Tab>
     </TabList>
 
     <TabPanel>
-      <Players />
+      <Settings bind:group />
+    </TabPanel>
+
+    <TabPanel>
+      <Players {group} />
     </TabPanel>
 
     <TabPanel>

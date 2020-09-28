@@ -11,7 +11,12 @@
     dispatch('save', { ref, name, level, picked })
   }
 
-  export let ref, name, level, picked, seq
+  export let ref,
+    name,
+    level,
+    picked,
+    group,
+    seq = null
 
   let showModal = false
 </script>

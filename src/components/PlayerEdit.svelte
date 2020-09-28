@@ -16,7 +16,10 @@
       error = 'A player with this name already exists'
       return
     }
-    dispatch('save', { ref, name, level, picked })
+
+    const group = localStorage.getItem('group') || 'MNF'
+
+    dispatch('save', { ref, name, level, picked, group })
     dispatch('close')
   }
   const del = () => {

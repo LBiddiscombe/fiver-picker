@@ -4,25 +4,22 @@
   import { onMount } from 'svelte'
   import { fly } from 'svelte/transition'
   import Modal from './Modal.svelte'
-  import { allPlayers } from '../api'
+  import { allPlayers, updatePlayers } from '../api'
   import Player from './Player.svelte'
   import PlayerEdit from './PlayerEdit.svelte'
   import { players } from '../stores/players'
 
+  export let group
   let showModal = false
+  let loading = true
 
   onMount(async () => {
-    players.set(await allPlayers())
+    players.set(await allPlayers(group))
+    loading = false
   })
 
   async function handleSave(e) {
-    const ref = e.detail.ref
-
-    let player = {
-      name: e.detail.name,
-      level: e.detail.level,
-      picked: e.detail.picked,
-    }
+    const { ref, ...player } = e.detail
 
     if (ref === -1) {
       players.add(player)
@@ -34,6 +31,14 @@
   async function handleDelete(e) {
     const ref = e.detail.ref
     players.delete(ref)
+  }
+
+  function setGroup() {
+    let playersWithGroup = $players.slice()
+
+    playersWithGroup = playersWithGroup.map((player) => ({ ...player, group: 'MNF' }))
+
+    updatePlayers(playersWithGroup)
   }
 </script>
 
@@ -50,27 +55,44 @@
     }
   }
 
-  button {
+  button.add {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0.75rem;
+    right: 0;
     margin: 0;
-    border: none;
-    background: none;
-    color: white;
+    border-radius: 0.25rem;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
   }
 
-  .player + .player {
+  .player {
     margin-top: 0.25rem;
+  }
+
+  .info {
+    font-size: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 </style>
 
 <div class="wrapper">
-  <button on:click={() => (showModal = true)}><Icon data={faUserPlus} scale="3" class="icon" /></button>
+  {#if true === false}<button on:click={setGroup}>Set Group</button>{/if}
 
-  {#if $players.length === 0}
-    <p>Loading...</p>
-  {:else}
+  <button class="add" on:click={() => (showModal = true)}>
+    <Icon data={faUserPlus} scale="2" class="icon" />
+    <span>Add Player</span>
+  </button>
+
+  {#if loading}
+    <p class="info">Loading...</p>
+  {:else if $players.length > 0}
     {#each $players.sort((a, b) => {
       return a.name.localeCompare(b.name)
     }) as player, i (player.ref)}
@@ -78,6 +100,13 @@
         <Player {...player} on:delete={handleDelete} on:save={handleSave} />
       </div>
     {/each}
+  {:else}
+    <p class="info">
+      Add the first Player
+      <button on:click={() => (showModal = true)}>
+        <Icon data={faUserPlus} scale="3" class="icon" />
+      </button>
+    </p>
   {/if}
 
   {#if showModal}

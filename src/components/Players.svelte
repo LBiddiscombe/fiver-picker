@@ -2,6 +2,7 @@
   import Icon from 'svelte-awesome'
   import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
   import { onMount } from 'svelte'
+  import { fly } from 'svelte/transition'
   import Modal from './Modal.svelte'
   import { allPlayers } from '../api'
   import Player from './Player.svelte'
@@ -58,6 +59,10 @@
     background: none;
     color: white;
   }
+
+  .player + .player {
+    margin-top: 0.25rem;
+  }
 </style>
 
 <div class="wrapper">
@@ -68,8 +73,10 @@
   {:else}
     {#each $players.sort((a, b) => {
       return a.name.localeCompare(b.name)
-    }) as player (player.ref)}
-      <Player {...player} on:delete={handleDelete} on:save={handleSave} />
+    }) as player, i (player.ref)}
+      <div in:fly={{ x: -50, delay: i * 25 }} class="player">
+        <Player {...player} on:delete={handleDelete} on:save={handleSave} />
+      </div>
     {/each}
   {/if}
 

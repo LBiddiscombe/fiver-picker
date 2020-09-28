@@ -44,10 +44,6 @@
     box-sizing: border-box;
     display: none;
   }
-
-  .card + .card {
-    margin-top: 0.25rem;
-  }
 </style>
 
 <div class="card">

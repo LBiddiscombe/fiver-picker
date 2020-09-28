@@ -1,5 +1,8 @@
 <script>
   import { onMount } from 'svelte'
+  import { quintOut } from 'svelte/easing'
+  import { crossfade } from 'svelte/transition'
+  import { flip } from 'svelte/animate'
   import Icon from 'svelte-awesome'
   import { faDice, faBalanceScale, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
@@ -34,6 +37,22 @@
     setShowAdvantage()
     saveTeams($teamPlayers)
   }
+
+  const [send, receive] = crossfade({
+    fallback(node, params) {
+      const style = getComputedStyle(node)
+      const transform = style.transform === 'none' ? '' : style.transform
+
+      return {
+        duration: 300,
+        easing: quintOut,
+        css: (t) => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`,
+      }
+    },
+  })
 </script>
 
 <style>
@@ -110,13 +129,25 @@
       <span class="balance" class:advantage={advantage < 0} style="width: {Math.abs(advantage)}rem">&nbsp;</span>
     </div>
     <div class="team">
-      {#each $teamA as player}
-        <div class="card">{player.name}</div>
+      {#each $teamA as player, i (player.ref)}
+        <div
+          in:receive={{ key: player.ref }}
+          out:send={{ key: player.ref }}
+          animate:flip={{ duration: 300 }}
+          class="card">
+          {player.name}
+        </div>
       {/each}
     </div>
     <div class="team">
-      {#each $teamB as player}
-        <div class="card">{player.name}</div>
+      {#each $teamB as player, i (player.ref)}
+        <div
+          in:receive={{ key: player.ref }}
+          out:send={{ key: player.ref }}
+          animate:flip={{ duration: 300 }}
+          class="card">
+          {player.name}
+        </div>
       {/each}
     </div>
   </div>

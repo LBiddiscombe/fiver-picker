@@ -1,4 +1,5 @@
 <script>
+  import { fly } from 'svelte/transition'
   import Icon from 'svelte-awesome'
   import { faWindowClose } from '@fortawesome/free-solid-svg-icons'
   import { createEventDispatcher, onDestroy } from 'svelte'
@@ -82,7 +83,7 @@
 
 <div class="modal-background" on:click={close} />
 
-<div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
+<div transition:fly={{ y: 50 }} class="modal" role="dialog" aria-modal="true" bind:this={modal}>
   <button class="close" on:click={close}>
     <Icon data={faWindowClose} class="icon" scale="2" />
   </button>

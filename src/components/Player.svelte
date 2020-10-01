@@ -33,6 +33,9 @@
   .name {
     flex: 1;
     padding: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .picker {

@@ -58,9 +58,14 @@
 <style>
   .wrapper {
     width: 100%;
+    max-width: 100vw;
+    height: calc(100vh - 12rem);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    grid-template-rows: auto 1fr;
+    gap: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .title {
@@ -80,11 +85,12 @@
   }
 
   .card {
-    display: flex;
-    align-items: center;
     background-color: rgba(255, 255, 255, 0.25);
     font-size: 1.25rem;
     padding: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .card + .card {

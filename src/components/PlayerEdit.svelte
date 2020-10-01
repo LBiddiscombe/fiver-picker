@@ -76,7 +76,7 @@
 </style>
 
 <form on:submit|preventDefault={save}>
-  <input type="text" autofocus bind:value={name} on:focus={() => (error = '')} />
+  <input type="text" autofocus bind:value={name} maxLength="25" on:focus={() => (error = '')} />
   <Levels bind:level />
   <p>{error}&nbsp;</p>
   <div class="actions">

@@ -2,10 +2,7 @@ export async function allPlayers(group) {
   const response = await fetch(`/.netlify/functions/player-crud?group=${group}`)
   const result = await response.json()
   return result.map((item) => {
-    return {
-      ref: item.ref['@ref'].id,
-      ...item.data,
-    }
+    return format(item)
   })
 }
 
@@ -15,10 +12,7 @@ export async function addPlayer(data) {
     method: 'POST',
   })
   const result = await response.json()
-  return {
-    ref: result.ref['@ref'].id,
-    ...result.data,
-  }
+  return format(result)
 }
 
 export async function updatePlayer(ref, data) {
@@ -27,10 +21,7 @@ export async function updatePlayer(ref, data) {
     method: 'PUT',
   })
   const result = await response.json()
-  return {
-    ref: result.ref['@ref'].id,
-    ...result.data,
-  }
+  return format(result)
 }
 
 export async function updatePlayers(data) {
@@ -48,4 +39,11 @@ export async function deletePlayer(ref) {
   })
   const result = await response.json()
   return result
+}
+
+function format(result) {
+  return {
+    ref: result.ref['@ref'].id,
+    ...result.data,
+  }
 }

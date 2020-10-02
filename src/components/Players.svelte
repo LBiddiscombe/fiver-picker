@@ -7,14 +7,13 @@
   import { allPlayers, updatePlayers } from '../api'
   import Player from './Player.svelte'
   import PlayerEdit from './PlayerEdit.svelte'
-  import { players } from '../stores/players'
+  import { group, players } from '../stores/players'
 
-  export let group
   let showModal = false
   let loading = true
 
   onMount(async () => {
-    players.set(await allPlayers(group))
+    players.set(await allPlayers($group))
     loading = false
   })
 

@@ -3,7 +3,7 @@
   import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
   import { createEventDispatcher } from 'svelte'
   import Levels from './Levels.svelte'
-  import { players } from '../stores/players'
+  import { group, players } from '../stores/players'
 
   const dispatch = createEventDispatcher()
   const save = () => {
@@ -17,9 +17,7 @@
       return
     }
 
-    const group = localStorage.getItem('group') || 'MNF'
-
-    dispatch('save', { ref, name, level, picked, group })
+    dispatch('save', { ref, name, level, fitness, picked, group: $group })
     dispatch('close')
   }
   const del = () => {
@@ -34,6 +32,7 @@
   export let name = ''
   export let level = 3
   export let picked = false
+  export let fitness = 3
 
   let error = ''
   let originalName = name.toString()
@@ -77,7 +76,8 @@
 
 <form on:submit|preventDefault={save}>
   <input type="text" autofocus bind:value={name} maxLength="25" on:focus={() => (error = '')} />
-  <Levels bind:level />
+  <Levels title="Ability" bind:level />
+  <Levels title="Fitness" bind:level={fitness} />
   <p>{error}&nbsp;</p>
   <div class="actions">
     <button class="delete" on:click={del} type="button">

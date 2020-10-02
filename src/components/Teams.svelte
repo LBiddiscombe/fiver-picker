@@ -7,13 +7,12 @@
   import { faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
   import { shuffle, balance } from '../utils'
-  import { teamPlayers, teamA, teamB, teamARating, teamBRating, saveTeams } from '../stores/teams'
+  import { teamPlayers, teamA, teamB, teamARating, teamBRating, saveTeams, split } from '../stores/teams'
 
-  let advantage, showAdvantage
+  let advantage
 
-  const setShowAdvantage = () => {
+  const setAdvantage = () => {
     advantage = $teamARating - $teamBRating
-    showAdvantage = new Array(Math.abs($teamARating - $teamBRating)).fill('+').join('')
   }
 
   onMount(() => {
@@ -23,18 +22,18 @@
         .filter((player) => player.picked)
         .sort((a, b) => a.seq - b.seq)
     )
-    setShowAdvantage()
+    setAdvantage()
   })
 
   const onShuffle = () => {
     teamPlayers.set(shuffle($teamPlayers))
-    setShowAdvantage()
+    setAdvantage()
     saveTeams($teamPlayers)
   }
 
   const onBalance = () => {
-    teamPlayers.set(balance($teamPlayers))
-    setShowAdvantage()
+    teamPlayers.set(balance($teamPlayers, $split))
+    setAdvantage()
     saveTeams($teamPlayers)
   }
 

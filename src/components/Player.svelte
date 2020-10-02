@@ -7,14 +7,15 @@
 
   const dispatch = createEventDispatcher()
 
-  const save = () => {
-    dispatch('save', { ref, name, level, picked })
+  const saveChecked = () => {
+    dispatch('save', { ref, name, picked })
   }
 
   export let ref,
     name,
     level,
     picked,
+    fitness,
     group = undefined,
     seq = undefined
 
@@ -57,14 +58,14 @@
 <div class="card">
   <div class="name" on:click={() => (showModal = true)}>{name}</div>
   <label class="picker" class:picked>
-    <input type="checkbox" bind:checked={picked} on:change={save} />
+    <input type="checkbox" bind:checked={picked} on:change={saveChecked} />
     <Icon data={faCheckSquare} scale="2.5" class="icon" />
   </label>
 
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Edit {name}</h2>
-      <PlayerEdit {ref} {name} {level} {picked} on:save on:delete on:close={() => (showModal = false)} />
+      <PlayerEdit {ref} {name} {level} {fitness} {picked} on:save on:delete on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

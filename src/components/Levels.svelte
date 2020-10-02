@@ -1,5 +1,6 @@
 <script>
   export let level = 3
+  export let title = ''
   let levels = [1, 2, 3, 4, 5]
 </script>
 
@@ -25,6 +26,7 @@
 </style>
 
 <div>
+  {title}
   <div class="levels">
     {#each levels as lev}
       <div class="level" class:selected={level === lev} on:click={() => (level = lev)}>{lev}</div>

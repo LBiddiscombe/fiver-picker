@@ -10,7 +10,7 @@ export function shuffle(array) {
   return array
 }
 
-export function balance(array) {
+export function balance(array, split = 5) {
   const pickAlgorithm = [1, 2, 2, 1]
 
   const results = [[], []]
@@ -18,12 +18,20 @@ export function balance(array) {
   // sort players by ability + a random factor
   array
     .sort((a, b) => {
-      return parseFloat(a.level + Math.random()) - parseFloat(b.level + Math.random())
+      return parseFloat(calcLevel(b, split) + Math.random()) - parseFloat(calcLevel(a, split) + Math.random())
     })
     .forEach((player, i) => {
       const team = pickAlgorithm[i % pickAlgorithm.length] - 1
       results[team].push(player)
+      console.log(player.name, calcLevel(player, split))
     })
 
   return results[0].concat(results[1])
+}
+
+export function calcLevel(player, split = 5) {
+  const { level = 3, fitness = 3 } = player
+  const weightedAbility = (level / 10) * split
+  const weightedFitness = (fitness / 10) * (10 - split)
+  return Math.round(weightedAbility + weightedFitness)
 }

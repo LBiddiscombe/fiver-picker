@@ -16,9 +16,10 @@ function createPlayers() {
       updatePlayer(ref, player).then((updatedPlayer) => {
         update((current) => {
           let playerToUpdate = current.find((p) => p.ref === ref)
-          playerToUpdate.name = player.name
-          playerToUpdate.level = player.level
-          playerToUpdate.picked = player.picked
+          playerToUpdate.name = updatedPlayer.name
+          playerToUpdate.level = updatedPlayer.level
+          playerToUpdate.fitness = updatedPlayer.fitness
+          playerToUpdate.picked = updatedPlayer.picked
           return current
         })
       })
@@ -31,3 +32,4 @@ function createPlayers() {
 }
 
 export const players = createPlayers()
+export const group = writable(localStorage.getItem('group') || 'MNF')

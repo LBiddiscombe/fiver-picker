@@ -1,5 +1,8 @@
 import { writable, derived } from 'svelte/store'
+import { calcLevel } from '../utils'
 import { updatePlayers } from '../api'
+
+export const split = writable(localStorage.getItem('split') || 5)
 
 export const teamPlayers = writable([])
 
@@ -19,12 +22,12 @@ export const teamB = derived(teamPlayers, ($teamPlayers) => {
   return team
 })
 
-export const teamARating = derived(teamA, ($teamA) => {
-  return $teamA.reduce((accum, cur) => accum + cur.level, 0)
+export const teamARating = derived([teamA, split], ($teamA, $split) => {
+  return $teamA.reduce((accum, cur, $split) => accum + calcLevel(cur, $split), 0)
 })
 
-export const teamBRating = derived(teamB, ($teamB) => {
-  return $teamB.reduce((accum, cur) => accum + cur.level, 0)
+export const teamBRating = derived([teamB, split], ($teamB, $split) => {
+  return $teamB.reduce((accum, cur, $split) => accum + calcLevel(cur, $split), 0)
 })
 
 export function saveTeams(players) {

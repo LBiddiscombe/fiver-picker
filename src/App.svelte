@@ -5,13 +5,6 @@
   import Players from './components/Players.svelte'
   import Teams from './components/Teams.svelte'
   import Settings from './components/Settings.svelte'
-  import { onMount, getContext } from 'svelte'
-
-  let group = localStorage.getItem('group') || 'MNF'
-
-  onMount(() => {
-    group = localStorage.getItem('group') || 'MNF'
-  })
 </script>
 
 <style>
@@ -74,11 +67,11 @@
     </TabList>
 
     <TabPanel>
-      <Settings bind:group />
+      <Settings />
     </TabPanel>
 
     <TabPanel>
-      <Players {group} />
+      <Players />
     </TabPanel>
 
     <TabPanel>

@@ -20,6 +20,7 @@ function createPlayers() {
           playerToUpdate.level = updatedPlayer.level
           playerToUpdate.fitness = updatedPlayer.fitness
           playerToUpdate.picked = updatedPlayer.picked
+          playerToUpdate.tags = updatedPlayer.tags
           return current
         })
       })

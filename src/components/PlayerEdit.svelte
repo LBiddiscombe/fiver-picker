@@ -1,11 +1,24 @@
 <script>
+  import Tags from 'svelte-tags-input'
   import Icon from 'svelte-awesome'
   import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
   import { createEventDispatcher } from 'svelte'
   import Levels from './Levels.svelte'
   import { group, players } from '../stores/players'
 
+  export let ref = -1
+  export let name = ''
+  export let level = 3
+  export let picked = false
+  export let fitness = 3
+  export let tags = ''
+
+  let error = ''
+  let originalName = name.toString()
+  let autoComplete = ['GK', 'DEF', 'ATT']
+
   const dispatch = createEventDispatcher()
+
   const save = () => {
     if (!name) {
       error = 'Please enter a name'
@@ -17,9 +30,10 @@
       return
     }
 
-    dispatch('save', { ref, name, level, fitness, picked, group: $group })
+    dispatch('save', { ref, name, level, fitness, picked, group: $group, tags })
     dispatch('close')
   }
+
   const del = () => {
     const agreed = confirm(`Delete ${name}?`)
     if (agreed) {
@@ -28,14 +42,9 @@
     }
   }
 
-  export let ref = -1
-  export let name = ''
-  export let level = 3
-  export let picked = false
-  export let fitness = 3
-
-  let error = ''
-  let originalName = name.toString()
+  function handleTags(event) {
+    tags = event.detail.tags.map((tag) => tag.toUpperCase())
+  }
 </script>
 
 <style>
@@ -72,13 +81,32 @@
   button > span {
     margin-right: 0.5rem;
   }
+
+  .tags {
+    margin: 1rem auto;
+    max-width: 300px;
+    color: black;
+  }
+
+  :global(.svelte-tags-input-tag) {
+    background-color: blueviolet;
+  }
 </style>
 
 <form on:submit|preventDefault={save}>
-  <input type="text" autofocus bind:value={name} maxLength="25" on:focus={() => (error = '')} />
+  <p>{error}&nbsp;</p>
+  <input type="text" bind:value={name} maxLength="25" on:focus={() => (error = '')} />
   <Levels title="Ability" bind:level />
   <Levels title="Fitness" bind:level={fitness} />
-  <p>{error}&nbsp;</p>
+  <div class="tags">
+    <Tags
+      {tags}
+      on:tags={handleTags}
+      onlyUnique={true}
+      minChars={1}
+      {autoComplete}
+      placeholder={'Tags, e.g. GK, DEF, ATT'} />
+  </div>
   <div class="actions">
     <button class="delete" on:click={del} type="button">
       <Icon data={faTrashAlt} class="icon" scale="2" />

@@ -20,6 +20,7 @@
     "netlify-cli": "^2.64.0",
     "sirv-cli": "^1.0.0",
     "svelte-awesome": "^2.3.0",
-    "svelte-tabs": "^1.1.0"
+    "svelte-tabs": "^1.1.0",
+    "svelte-tags-input": "^2.6.5"
   }
 }

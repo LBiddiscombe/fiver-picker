@@ -53,7 +53,7 @@
   .modal {
     position: absolute;
     left: 50%;
-    top: 30%;
+    top: 40%;
     width: calc(100vw - 4em);
     max-width: 32em;
     max-height: calc(100vh - 4em);
@@ -64,6 +64,7 @@
     background: black;
     border: 2px solid rgba(255, 255, 255, 0.8);
     text-align: center;
+    z-index: 5;
   }
 
   button {

@@ -15,7 +15,8 @@
     name,
     level,
     picked,
-    fitness,
+    fitness = 3,
+    tags = '',
     group = undefined,
     seq = undefined
 
@@ -23,6 +24,9 @@
 </script>
 
 <style>
+  h2 {
+    margin: 1rem 0;
+  }
   .card {
     display: flex;
     justify-content: space-between;
@@ -65,7 +69,16 @@
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Edit {name}</h2>
-      <PlayerEdit {ref} {name} {level} {fitness} {picked} on:save on:delete on:close={() => (showModal = false)} />
+      <PlayerEdit
+        {ref}
+        {name}
+        {level}
+        {fitness}
+        {picked}
+        {tags}
+        on:save
+        on:delete
+        on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

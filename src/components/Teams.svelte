@@ -7,7 +7,17 @@
   import { faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
   import { shuffle, balance } from '../utils'
-  import { teamPlayers, teamA, teamB, teamARating, teamBRating, saveTeams, split } from '../stores/teams'
+  import {
+    teamPlayers,
+    teamA,
+    teamB,
+    teamARating,
+    teamBRating,
+    teamATags,
+    teamBTags,
+    saveTeams,
+    split,
+  } from '../stores/teams'
 
   let advantage
 
@@ -134,6 +144,25 @@
     align-items: center;
     gap: 1rem;
   }
+
+  .tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    background-color: goldenrod;
+    color: black;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .tag + .tag {
+    margin-left: 0.25rem;
+  }
 </style>
 
 {#if $teamPlayers.length > 0}
@@ -153,6 +182,9 @@
           {player.name}
         </div>
       {/each}
+      <div class="tags">
+        {#each $teamATags as tag}<span class="tag"> {tag} </span>{/each}
+      </div>
     </div>
     <div class="team">
       {#each $teamB as player, i (player.ref)}
@@ -164,6 +196,9 @@
           {player.name}
         </div>
       {/each}
+      <div class="tags">
+        {#each $teamBTags as tag}<span class="tag"> {tag} </span>{/each}
+      </div>
     </div>
   </div>
 {:else}

@@ -2,7 +2,7 @@ import { writable, derived } from 'svelte/store'
 import { calcLevel } from '../utils'
 import { updatePlayers } from '../api'
 
-export const split = writable(localStorage.getItem('split') || 5)
+export const split = writable(localStorage.getItem('split') || 50)
 
 export const teamPlayers = writable([])
 

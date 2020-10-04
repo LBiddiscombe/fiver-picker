@@ -22,14 +22,31 @@
     margin: 0.5rem;
     text-transform: uppercase;
   }
-  label + label {
+
+  input[type='range'] {
+    padding: 0;
+  }
+
+  .splits-title {
     margin-top: 2rem;
+  }
+
+  .splits {
+    margin: 0 auto;
+    max-width: 400px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    justify-content: center;
+    align-items: center;
   }
 </style>
 
 <form on:submit|preventDefault>
   <label><span>Group</span><input type="text" bind:value={$group} /></label>
-  <label><span>Ability/Fitness Weights ({$split * 10} / {100 - $split * 10})</span>
-    <input type="range" bind:value={$split} min="0" max="10" />
-  </label>
+  <div class="splits-title">Level Influence</div>
+  <div class="splits">
+    <span>Ability<br />{100 - $split}%</span>
+    <input type="range" bind:value={$split} min="0" max="100" step="10" />
+    <span>Fitness<br />{$split}%</span>
+  </div>
 </form>

@@ -29,9 +29,9 @@ export function balance(array, split = 5) {
   return results[0].concat(results[1])
 }
 
-export function calcLevel(player, split = 5) {
+export function calcLevel(player, split = 50) {
   const { level = 3, fitness = 3 } = player
-  const weightedAbility = (level / 10) * split
-  const weightedFitness = (fitness / 10) * (10 - split)
+  const weightedAbility = (level / 100) * (100 - split)
+  const weightedFitness = (fitness / 100) * split
   return Math.round(weightedAbility + weightedFitness)
 }

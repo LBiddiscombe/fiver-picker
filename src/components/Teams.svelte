@@ -6,20 +6,10 @@
   import Icon from 'svelte-awesome'
   import { faDice, faBalanceScale } from '@fortawesome/free-solid-svg-icons'
   import { players } from '../stores/players'
-  import { shuffle, balance } from '../utils'
-  import {
-    teamPlayers,
-    teamA,
-    teamB,
-    teamARating,
-    teamBRating,
-    teamATags,
-    teamBTags,
-    saveTeams,
-    split,
-  } from '../stores/teams'
+  import { teamPlayers, teamA, teamB, teamARating, teamBRating, teamATags, teamBTags, saveTeams } from '../stores/teams'
 
-  let advantage
+  let advantage,
+    actionActive = false
 
   const setAdvantage = () => {
     advantage = $teamARating - $teamBRating
@@ -36,15 +26,21 @@
   })
 
   const onShuffle = () => {
-    teamPlayers.set(shuffle($teamPlayers))
+    if (actionActive) return
+    actionActive = true
+    teamPlayers.shuffle($teamPlayers)
     setAdvantage()
     saveTeams($teamPlayers)
+    setTimeout(() => (actionActive = false), 1000)
   }
 
   const onBalance = () => {
-    teamPlayers.set(balance($teamPlayers, $split))
+    if (actionActive) return
+    actionActive = true
+    teamPlayers.balance($teamPlayers)
     setAdvantage()
     saveTeams($teamPlayers)
+    setTimeout(() => (actionActive = false), 1000)
   }
 
   const [send, receive] = crossfade({
@@ -149,15 +145,15 @@
     margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
   }
 
   .tag {
     font-size: 0.75rem;
-    background-color: goldenrod;
+    font-weight: bold;
+    background-color: limegreen;
     color: black;
-    border-radius: 0.25rem;
-    padding: 0.5rem;
+    border-radius: 0.125rem;
+    padding: 0.25rem 0.5rem;
   }
 
   .tag + .tag {

@@ -16,11 +16,7 @@ function createPlayers() {
       updatePlayer(ref, player).then((updatedPlayer) => {
         update((current) => {
           let playerToUpdate = current.find((p) => p.ref === ref)
-          playerToUpdate.name = updatedPlayer.name
-          playerToUpdate.level = updatedPlayer.level
-          playerToUpdate.fitness = updatedPlayer.fitness
-          playerToUpdate.picked = updatedPlayer.picked
-          playerToUpdate.tags = updatedPlayer.tags
+          playerToUpdate = Object.assign(playerToUpdate, updatedPlayer)
           return current
         })
       })

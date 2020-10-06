@@ -4,7 +4,7 @@
   import { onMount } from 'svelte'
   import { fly } from 'svelte/transition'
   import Modal from './Modal.svelte'
-  import { allPlayers, updatePlayers } from '../api'
+  import { allPlayers } from '../api'
   import Player from './Player.svelte'
   import PlayerEdit from './PlayerEdit.svelte'
   import { group, players } from '../stores/players'
@@ -16,29 +16,6 @@
     players.set(await allPlayers($group))
     loading = false
   })
-
-  async function handleSave(e) {
-    const { ref, ...player } = e.detail
-
-    if (ref === -1) {
-      players.add(player)
-    } else {
-      players.update(ref, player)
-    }
-  }
-
-  async function handleDelete(e) {
-    const ref = e.detail.ref
-    players.delete(ref)
-  }
-
-  function setGroup() {
-    let playersWithGroup = $players.slice()
-
-    playersWithGroup = playersWithGroup.map((player) => ({ ...player, group: 'MNF' }))
-
-    updatePlayers(playersWithGroup)
-  }
 </script>
 
 <style>
@@ -82,8 +59,6 @@
 </style>
 
 <div class="wrapper">
-  {#if true === false}<button on:click={setGroup}>Set Group</button>{/if}
-
   <button class="add" on:click={() => (showModal = true)}>
     <Icon data={faUserPlus} scale="2" class="icon" />
     <span>Add Player</span>
@@ -96,7 +71,7 @@
       return a.name.localeCompare(b.name)
     }) as player, i (player.ref)}
       <div in:fly={{ x: -50, delay: i * 25 }} class="player">
-        <Player {...player} on:delete={handleDelete} on:save={handleSave} />
+        <Player ref={player.ref} />
       </div>
     {/each}
   {:else}
@@ -111,7 +86,7 @@
   {#if showModal}
     <Modal on:close={() => (showModal = false)}>
       <h2 slot="header">Add Player</h2>
-      <PlayerEdit ref={-1} on:save={handleSave} on:close={() => (showModal = false)} />
+      <PlayerEdit ref={-1} on:close={() => (showModal = false)} />
     </Modal>
   {/if}
 </div>

@@ -1,24 +1,17 @@
 <script>
   import Icon from 'svelte-awesome'
   import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
-  import { createEventDispatcher } from 'svelte'
   import Modal from './Modal.svelte'
   import PlayerEdit from './PlayerEdit.svelte'
+  import { players } from '../stores/players'
 
-  const dispatch = createEventDispatcher()
+  export let ref
 
-  const saveChecked = () => {
-    dispatch('save', { ref, name, picked })
+  let player
+
+  $: {
+    player = $players.find((player) => player.ref === ref)
   }
-
-  export let ref,
-    name,
-    level,
-    picked,
-    fitness = 3,
-    tags = '',
-    group = undefined,
-    seq = undefined
 
   let showModal = false
 </script>
@@ -60,25 +53,18 @@
 </style>
 
 <div class="card">
-  <div class="name" on:click={() => (showModal = true)}>{name}</div>
-  <label class="picker" class:picked>
-    <input type="checkbox" bind:checked={picked} on:change={saveChecked} />
-    <Icon data={faCheckSquare} scale="2.5" class="icon" />
-  </label>
+  {#if player}
+    <div class="name" on:click={() => (showModal = true)}>{player.name}</div>
+    <label class="picker" class:picked={player.picked}>
+      <input type="checkbox" bind:checked={player.picked} />
+      <Icon data={faCheckSquare} scale="2.5" class="icon" />
+    </label>
 
-  {#if showModal}
-    <Modal on:close={() => (showModal = false)}>
-      <h2 slot="header">Edit {name}</h2>
-      <PlayerEdit
-        {ref}
-        {name}
-        {level}
-        {fitness}
-        {picked}
-        {tags}
-        on:save
-        on:delete
-        on:close={() => (showModal = false)} />
-    </Modal>
+    {#if showModal}
+      <Modal on:close={() => (showModal = false)}>
+        <h2 slot="header">Edit {player.name}</h2>
+        <PlayerEdit {ref} on:close={() => (showModal = false)} />
+      </Modal>
+    {/if}
   {/if}
 </div>

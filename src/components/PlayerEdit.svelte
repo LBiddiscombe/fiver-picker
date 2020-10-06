@@ -2,48 +2,61 @@
   import Tags from 'svelte-tags-input'
   import Icon from 'svelte-awesome'
   import { faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-  import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher, onMount } from 'svelte'
   import Levels from './Levels.svelte'
   import { group, players } from '../stores/players'
 
-  export let ref = -1
-  export let name = ''
-  export let level = 3
-  export let picked = false
-  export let fitness = 3
-  export let tags = ''
-
-  let error = ''
-  let originalName = name.toString()
-  let autoComplete = ['GK', 'DEF', 'ATT']
-
   const dispatch = createEventDispatcher()
 
+  export let ref = -1
+
+  let player = {
+    name: '',
+    level: 3,
+    fitness: 3,
+    picked: false,
+    tags: '',
+  }
+
+  let error = ''
+  let originalName
+  let autoComplete = ['GK', 'DEF', 'ATT']
+
+  onMount(() => {
+    if (ref !== -1) player = { ...player, ...$players.find((player) => player.ref === ref), group: $group }
+    originalName = player.name.toString()
+  })
+
   const save = () => {
-    if (!name) {
+    if (!player.name) {
       error = 'Please enter a name'
       return
     }
 
-    if (name !== originalName && $players.find((player) => player.name === name)) {
+    if (player.name !== originalName && $players.findIndex((p) => p.name === player.name)) {
       error = 'A player with this name already exists'
       return
     }
 
-    dispatch('save', { ref, name, level, fitness, picked, group: $group, tags })
+    if (ref === -1) {
+      players.add(player)
+    } else {
+      players.update(ref, player)
+    }
+
     dispatch('close')
   }
 
   const del = () => {
-    const agreed = confirm(`Delete ${name}?`)
+    const agreed = confirm(`Delete ${player.name}?`)
     if (agreed) {
-      dispatch('delete', { ref })
+      players.delete(ref)
       dispatch('close')
     }
   }
 
   function handleTags(event) {
-    tags = event.detail.tags.map((tag) => tag.toUpperCase())
+    player.tags = event.detail.tags.map((tag) => tag.toUpperCase())
   }
 </script>
 
@@ -95,12 +108,12 @@
 
 <form on:submit|preventDefault={save}>
   <p>{error}&nbsp;</p>
-  <input type="text" bind:value={name} maxLength="25" on:focus={() => (error = '')} />
-  <Levels title="Ability" bind:level />
-  <Levels title="Fitness" bind:level={fitness} />
+  <input type="text" bind:value={player.name} maxLength="25" on:focus={() => (error = '')} />
+  <Levels title="Ability" bind:level={player.level} />
+  <Levels title="Fitness" bind:level={player.fitness} />
   <div class="tags">
     <Tags
-      {tags}
+      tags={player.tags}
       on:tags={handleTags}
       onlyUnique={true}
       minChars={1}

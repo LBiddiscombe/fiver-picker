@@ -75,12 +75,7 @@
       </div>
     {/each}
   {:else}
-    <p class="info">
-      Add the first Player
-      <button on:click={() => (showModal = true)}>
-        <Icon data={faUserPlus} scale="3" class="icon" />
-      </button>
-    </p>
+    <p class="info">Add the first Player</p>
   {/if}
 
   {#if showModal}

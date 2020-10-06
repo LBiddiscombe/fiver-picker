@@ -62,7 +62,7 @@
     padding: 1rem;
     border-radius: 0.2em;
     background: black;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     text-align: center;
     z-index: 5;
   }
